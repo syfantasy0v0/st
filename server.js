@@ -4,6 +4,18 @@ import { serverDirectory } from './src/server-directory.js';
 
 console.log(`Node version: ${process.version}. Running in ${process.env.NODE_ENV} environment. Server directory: ${serverDirectory}`);
 
+// Vercel Runtime Logging Enhancement
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Application specific logging, throwing an error, or other logic here
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Application specific logging, throwing an error, or other logic here
+});
+
+
 // config.yaml will be set when parsing command line arguments
 const cliArgs = new CommandLineParser().parse(process.argv);
 globalThis.DATA_ROOT = cliArgs.dataRoot;

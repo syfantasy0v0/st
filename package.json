@@ -116,7 +116,7 @@
     },
     "version": "1.13.3",
     "scripts": {
-        "start": "node server.js",
+        "start": "node server.js --config config.vercel.yaml",
         "debug": "node --inspect server.js",
         "start:global": "node server.js --global",
         "start:electron": "cd ./src/electron && npm run start",
