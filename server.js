@@ -8,6 +8,7 @@
 
 import path from 'node:path';
 import { serverDirectory } from './src/server-directory.js';
+import { setConfigFilePath } from './src/util.js';
 
 console.log('Entering Vercel-specific server bootstrap...');
 console.log(`Node version: ${process.version}. Running in ${process.env.NODE_ENV} environment.`);
@@ -62,7 +63,12 @@ globalThis.COMMAND_LINE_ARGS = {
     getIPv6ListenUrl: () => new URL(`http://[::]:${globalThis.COMMAND_LINE_ARGS.port}`),
 };
 
+// Manually call setConfigFilePath to satisfy the config reader
+const pseudoConfigPath = './config.yaml';
+setConfigFilePath(pseudoConfigPath);
+
 console.log('Global variables and environment set for Vercel.');
+console.log(`Pseudo config path set to: ${pseudoConfigPath}`);
 console.log('Proceeding to start server-main.js...');
 
 // Change to the server directory as the original script does
