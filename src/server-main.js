@@ -203,8 +203,8 @@ app.get('/callback/:source?', (request, response) => {
 app.get('/login', loginPageMiddleware);
 
 // Host frontend assets
-const webpackMiddleware = getWebpackServeMiddleware();
-app.use(webpackMiddleware);
+// const webpackMiddleware = getWebpackServeMiddleware();
+// app.use(webpackMiddleware);
 app.use(express.static(path.join(serverDirectory, 'public'), {}));
 
 // Public API
@@ -294,7 +294,7 @@ async function preSetupTasks() {
     initRequestProxy({ enabled: cliArgs.requestProxyEnabled, url: cliArgs.requestProxyUrl, bypass: cliArgs.requestProxyBypass });
 
     // Wait for frontend libs to compile
-    await webpackMiddleware.runWebpackCompiler();
+    // await webpackMiddleware.runWebpackCompiler();
 }
 
 /**
