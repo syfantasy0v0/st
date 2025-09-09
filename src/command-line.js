@@ -262,11 +262,14 @@ export class CommandLineParser {
         if (isGlobal && !fs.existsSync(path.dirname(configPath))) {
             fs.mkdirSync(path.dirname(configPath), { recursive: true });
         }
-        initConfig(configPath);
+        const isVercel = process.env.VERCEL === '1';
+        if (!isVercel) {
+            initConfig(configPath);
+        }
 
-        const dataRoot = isGlobal
+        const dataRoot = isVercel ? '/tmp/data' : (isGlobal
             ? defaultConfig.dataRoot
-            : (cliArguments.dataRoot ?? getConfigValue('dataRoot', defaultConfig.dataRoot));
+            : (cliArguments.dataRoot ?? getConfigValue('dataRoot', defaultConfig.dataRoot)));
         if (isGlobal && !fs.existsSync(dataRoot)) {
             fs.mkdirSync(dataRoot, { recursive: true });
         }

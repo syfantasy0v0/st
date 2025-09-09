@@ -1,4 +1,16 @@
 #!/usr/bin/env node
+
+// Set Vercel-specific environment variables
+if (process.env.VERCEL === '1') {
+    process.env.ST_LISTEN = 'true';
+    process.env.ST_BROWSERLAUNCH_ENABLED = 'false';
+    process.env.ST_LOGGING_ENABLEACCESSLOG = 'false';
+    process.env.ST_BACKUPS_CHAT_ENABLED = 'false';
+    process.env.ST_THUMBNAILS_ENABLED = 'false';
+    process.env.ST_PERFORMANCE_USEDISKCACHE = 'false';
+    process.env.ST_EXTENSIONS_MODELS_AUTODOWNLOAD = 'false';
+}
+
 import { CommandLineParser } from './src/command-line.js';
 import { serverDirectory } from './src/server-directory.js';
 
