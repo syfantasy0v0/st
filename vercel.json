@@ -17,6 +17,5 @@
             "src": "/(.*)",
             "dest": "server.js"
         }
-    ],
-    "installCommand": "npm install && cp config.vercel.yaml config.yaml"
+    ]
 }
