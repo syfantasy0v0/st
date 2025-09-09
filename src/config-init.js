@@ -155,9 +155,13 @@ export function addMissingConfigValues(configPath) {
     try {
         const defaultConfig = yaml.parse(fs.readFileSync(path.join(serverDirectory, './default/config.yaml'), 'utf8'));
 
+        const isVercel = process.env.VERCEL === '1';
+
         if (!fs.existsSync(configPath)) {
             console.warn(color.yellow(`Warning: config.yaml not found at ${configPath}. Creating a new one with default values.`));
-            fs.writeFileSync(configPath, yaml.stringify(defaultConfig));
+            if (!isVercel) {
+                fs.writeFileSync(configPath, yaml.stringify(defaultConfig));
+            }
             return;
         }
 
@@ -226,7 +230,9 @@ export function addMissingConfigValues(configPath) {
             console.log('Migrating config values in config.yaml:', migratedKeys);
         }
 
-        fs.writeFileSync(configPath, yaml.stringify(config));
+        if (!isVercel) {
+            fs.writeFileSync(configPath, yaml.stringify(config));
+        }
     } catch (error) {
         console.error(color.red('FATAL: Could not add missing config values to config.yaml'), error);
     }
