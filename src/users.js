@@ -508,9 +508,12 @@ export function toAvatarKey(handle) {
  * @returns {Promise<void>}
  */
 export async function initUserStorage(dataRoot) {
+    const isVercel = process.env.VERCEL === '1';
+    const storagePath = isVercel ? '/tmp/_storage' : path.join(dataRoot, '_storage');
     console.log('Using data root:', color.green(dataRoot));
+    console.log('Using storage path:', color.green(storagePath));
     await storage.init({
-        dir: path.join(dataRoot, '_storage'),
+        dir: storagePath,
         ttl: false, // Never expire
     });
 
