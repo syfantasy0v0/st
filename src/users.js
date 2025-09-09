@@ -225,6 +225,12 @@ export async function getUserDirectoriesList() {
  * Perform migration from the old user data format to the new one.
  */
 export async function migrateUserData() {
+    const isVercel = process.env.VERCEL === '1';
+    if (isVercel) {
+        console.log('Vercel environment detected, skipping user data migration.');
+        return;
+    }
+
     const publicDirectory = path.join(process.cwd(), 'public');
 
     // No need to migrate if the characters directory doesn't exists
