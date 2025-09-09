@@ -50,6 +50,47 @@ export function setConfigFilePath(configFilePath) {
  * @returns {object} Config object
  */
 export function getConfig() {
+    const isVercel = process.env.VERCEL === '1';
+
+    if (isVercel) {
+        if (CACHED_CONFIG) {
+            return CACHED_CONFIG;
+        }
+        // On Vercel, we construct the config from environment variables directly.
+        // This bypasses all fs operations.
+        console.log('Vercel environment detected. Constructing config from environment variables.');
+        const vercelConfig = {
+            listen: toBoolean(process.env.ST_LISTEN),
+            browserLaunch: {
+                enabled: toBoolean(process.env.ST_BROWSERLAUNCH_ENABLED),
+            },
+            logging: {
+                enableAccessLog: toBoolean(process.env.ST_LOGGING_ENABLEACCESSLOG),
+            },
+            backups: {
+                chat: {
+                    enabled: toBoolean(process.env.ST_BACKUPS_CHAT_ENABLED),
+                },
+            },
+            thumbnails: {
+                enabled: toBoolean(process.env.ST_THUMBNAILS_ENABLED),
+            },
+            performance: {
+                useDiskCache: toBoolean(process.env.ST_PERFORMANCE_USEDISKCACHE),
+            },
+            extensions: {
+                models: {
+                    autoDownload: toBoolean(process.env.ST_EXTENSIONS_MODELS_AUTODOWNLOAD),
+                },
+            },
+        };
+        // On Vercel, we can't read the default config, so we have to live without it
+        // and rely on the environment variables and the code's own default values.
+        CACHED_CONFIG = vercelConfig;
+        return vercelConfig;
+    }
+
+
     if (CONFIG_PATH === null) {
         console.trace();
         console.error(color.red('No config file path set. Please set the config file path using setConfigFilePath().'));
